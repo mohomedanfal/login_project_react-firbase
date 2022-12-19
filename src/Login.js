@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, logInWithEmailAndPassword, signInWithGoogle } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -12,17 +12,16 @@ function Login() {
 
   useEffect(() => {
     if (loading) {
-      // maybe trigger a loading screen
       return;
     }
-    if (user) navigate("/dashboard");
+    if (user) navigate("/form");
   }, [user, loading]);
 
   return (
     <div className="login">
       <div className="login__container">
         <input
-          type="text"
+          type="email"
           className="login__textBox"
           value={email}
           onChange={(e) => setEmail(e.target.value)}

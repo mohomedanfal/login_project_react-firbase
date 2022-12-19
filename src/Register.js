@@ -22,21 +22,21 @@ function Register() {
 
   useEffect(() => {
     if (loading) return;
-    if (user) navigate("/dashboard");
+    if (user) navigate("/form");
   }, [user, loading]);
 
   return (
     <div className="register">
       <div className="register__container">
         <input
-          type="text"
+          // type="text"
           className="register__textBox"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Full Name"
         />
         <input
-          type="text"
+          type="email"
           className="register__textBox"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
