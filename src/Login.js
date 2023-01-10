@@ -20,6 +20,11 @@ function Login() {
   return (
     <div className="login">
       <div className="login__container">
+        <div>
+          <h2>Welcome</h2>
+          <h2>Back</h2>
+          <h5>Please Login to continue!</h5>
+        </div>
         <input
           type="email"
           className="login__textBox"

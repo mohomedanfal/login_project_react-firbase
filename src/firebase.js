@@ -17,6 +17,8 @@ import {
   addDoc,
 } from "firebase/firestore";
 
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyBXEQLdV05rwhqyL3J3NQztkQP6Ye73_uI",
   authDomain: "react-login-86606.firebaseapp.com",

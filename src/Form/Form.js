@@ -1,11 +1,22 @@
 import React, { Component } from "react";  
 import './Form.css'    
+import { auth, db } from "./../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import {
+    getFirestore,
+    query,
+    getDocs,
+    collection,
+    where,
+    addDoc,
+  } from "firebase/firestore";
+
     
 class Form extends Component {    
     constructor(props) {    
         super(props);    
         this.state = {    
-            name: '',       
+            id: '',       
             date: '',    
             gender: 'select',    
             phoneNumber: '',    
@@ -17,13 +28,13 @@ class Form extends Component {
     }    
     
     handleFormValidation() {    
-        const { name, date, gender, phoneNumber, district } = this.state;    
+        const { id, date, gender, phoneNumber, district } = this.state;    
         let formErrors = {};    
         let formIsValid = true;    
     
-        if (!name) {    
+        if (!id) {    
             formIsValid = false;    
-            formErrors["nameErr"] = "Name is required.";    
+            formErrors["idErr"] = "ID is required.";    
         }    
     
         if (!date) {    
@@ -48,7 +59,7 @@ class Form extends Component {
             formErrors["phoneNumberErr"] = "Phone number is required.";    
         }    
         else {    
-            var mobPattern = /^(?:(?:\\+|0{0,2})91(\s*[\\-]\s*)?|[0]?)?[789]\d{9}$/;    
+            var mobPattern = /^\+?94\d{9}$/;    
             if (!mobPattern.test(phoneNumber)) {    
                 formIsValid = false;    
                 formErrors["phoneNumberErr"] = "Invalid phone number.";    
@@ -73,29 +84,36 @@ class Form extends Component {
         e.preventDefault();    
     
         if (this.handleFormValidation()) {    
+            this.saveData()
             alert('You have been successfully.')    
             this.setState(this.initialState)    
         }    
     }    
+     saveData = () => {
+        const data = {...this.state, uid: auth.currentUser.uid};
+        console.log(data, auth.currentUser);
+        delete data.formErrors;
+        addDoc(collection(db, "user-details"), data).then(() => console.log('saved')).catch(err => console.log(err));
+      }
     
     render() {    
     
-        const { nameErr, dateErr, genderErr, phoneNumberErr, districtErr } = this.state.formErrors;    
+        const { idErr, dateErr, genderErr, phoneNumberErr, districtErr } = this.state.formErrors;    
     
         return (    
             <div className="formDiv">    
-                <h3 style={{ textAlign: "center" }} >Form of PHI status</ h3>    
+                <h3 style={{ textAlign: "center" }} >PHI DETAILS</ h3>    
                 <div>    
                     <form onSubmit={this.handleSubmit}>    
                         <div>    
-                            <label htmlFor="name">Name</label>    
-                            <input type="text" name="name"    
-                                value={this.state.name}    
+                            <label htmlFor="id">NIC</label>    
+                            <input type="text" name="id"    
+                                value={this.state.id}    
                                 onChange={this.handleChange}    
-                                placeholder="Your name.."    
-                                className={nameErr ? ' showError' : ''} />    
-                            {nameErr &&    
-                                <div style={{ color: "red", paddingBottom: 10 }}>{nameErr}</div>    
+                                placeholder="Your ID.."    
+                                className={idErr ? ' showError' : ''} />    
+                            {idErr &&    
+                                <div style={{ color: "red", paddingBottom: 10 }}>{idErr}</div>    
                             }    
     
                         </div>       
